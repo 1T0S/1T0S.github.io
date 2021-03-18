@@ -50,7 +50,10 @@ table, th, td{
     color: white;
     margin-left: 4vw;
     border: 1px solid #aaa;
-    border-collapse: collapse;
+}
+
+tr, th, td{
+    padding: 10px;
 }
 
 a{

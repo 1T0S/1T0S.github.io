@@ -39,6 +39,14 @@
     <li>Update - Měnění dat v databázi</li>
     <li>Delete - Mazání dat z databáze</li>
 </ul>
+<h3>2.1 Databázové enginy</h3>
+<p>Databázový engine je část Database Management Systému, která se stará o provádění CRUD operací. Pro DBMS, který
+    používáme (MySql), existují dva důležité databázové enginy - InnoDB a MyISAM. Tyto enginy mají několik rozdílů:</p>
+<ul>
+    <li>MyISAM <b>nepodporuje</b> transakce, InnoDB ano</li>
+    <li>MyISAM <b>nepodporuje</b> cizí klíč, InnoDB ano</li>
+    <li>InnoDB <b>nepodporuje</b> FULLTEXT, MyISAM ano</li>
+</ul>
 
 <h2>3. Druhy databází</h2>
 <p>
@@ -155,11 +163,19 @@
 <p>List obvykle používaných constraintů:</p>
 <ul>
     <li>NOT NULL - Ujistí se, že sloupec má hodnotu, pokud tomu tak není, vyhodí error</li>
-    <li>UNIQUE - Ujistí se, že sloupec má unikátní hodnotu (hodnota, která se v něm nachází, není v žádném jiném záznamu)</li>
+    <li>UNIQUE - Ujistí se, že sloupec má unikátní hodnotu (hodnota, která se v něm nachází, není v žádném jiném
+        záznamu)
+    </li>
     <li>PRIMARY KEY - Primární klíč, woooow!</li>
     <li>DEFAULT <b>val</b> - Pokud není specifikována hodnota sloupce, nastaví ji na <b>val</b></li>
     <li>CHECK <b>(podmínka)</b> - Ujistí se, že zadávaná hodnota splňuje podmínku</li>
+    <li>FOREIGN KEY - Reference řádku jiné tabulky</li>
 </ul>
+<p>Foreign key se zapisuje syntaxí:</p>
+<p class="code">...</p>
+<p class="code">FOREIGN KEY(<i>jmenoSloupce</i>) REFERENCES <i>jmenoCiziTabulky</i>(<i>jmenoSloupceVCiziTabulce</i>);
+</p>
+<p class="code">...</p>
 
 <h2>4. Mazání tabulek</h2>
 <p>
@@ -215,5 +231,104 @@
 
 <br>
 <h1>Získávání dat z databáze</h1>
+
+<h2>1. Dotazy</h2>
+<p>
+    Dotazy (queries) jsou způsobem, jak z databáze dostat data. Pro tvorbu dotazů, které tahají data z databáze,
+    se používá příkaz SELECT
+</p>
+<p>Základní tvar příkazu SELECT, který vybere veškeré záznamy z dané tabulky:</p>
+<p class="code">SELECT * FROM <i>jmenoTabulky</i>;</p>
+<p>Hvězdička může být vyměněna za konkrétní sloupce, které chceme dotazem získat.</p>
+<p>Příklad dotazu, který vybere jména a přijmení z tabulky person:</p>
+<p class="code">SELECT <i>name</i>, <i>surname</i> FROM <i>person</i>;</p>
+
+<h2>2. Třízení</h2>
+<p>Výsledky, které dotaz vrátí, je možno třídit pomocí ORDER BY:</p>
+<p class="code">SELECT * FROM <i>jmenoDatabaze</i> ORDER BY <i>jmenoSloupce</i>, <i>jmenoSloupce, ...</i>;</p>
+<p>
+    Třídit lze dle většiny datových typů. V základu jsou data třízena vzestupně (0...∞, A...Z), přidáním keywordu
+    <b>DESC</b> za název sloupce však lze třídit i sestupně.
+</p>
+<p>Příklad, který vybere jména a věk z databáze a tato data následně setřídí sestupně:</p>
+<p class="code">SELECT <i>name</i>, <i>age</i> FROM <i>person</i> ORDER BY <i>age</i> DESC, <i>name</i> DESC;</p>
+
+<h2>3. Limitování</h2>
+<p>Počet výsledků, které dotaz zobrazí, je možno omezit příkazem <b>LIMIT</b>:</p>
+<p class="code">SELECT * FROM <i>databaze</i> LIMIT <i>n</i>;</p>
+<p>Tento příkaz vypíše pouze <i>n</i> prvků z <i>tabulky</i></p>
+
+<h2>4. Podmínky</h2>
+<p>
+    Vracet všechny záznamy tabulky nemá smysl, proto jsou tu podmínky. Pomocí příkazu <b>WHERE</b> lze omezit, jaké
+    sloupce budou vráceny.
+</p>
+<p>Vzorový tvar dotazu s WHERE:</p>
+<p class="code">SELECT * FROM <i>tabulka</i> WHERE <b>podminka</b>;</p>
+<p>Podmínek může být více, spojují se pak logickými operátory:</p>
+<p class="code">SELECT * FROM <i>tabulka</i> WHERE <b>podminka</b> <i>logickyOperator</i>
+    <b>podminka</b> <i>logickyOperator</i> <b>podminka</b>....;</p>
+<p>List často používaných operátorů:</p>
+<ul>
+    <li><b> >, <, <=, >=, =, <> </b> Operátory porovnání</li>
+    <li><b>AND, OR</b> Základní logické operátory</li>
+    <li><b>IN, BETWEEN, LIKE</b> Používány pro složitější podmínky</li>
+</ul>
+<p>Příklady:</p>
+<p class="code">SELECT * FROM <i>person</i> WHERE <i>age</i> BETWEEN 20 AND 80</p>
+<p class="code">SELECT * FROM <i>person</i> WHERE <i>surname</i> IN ("Net", "Bruh")</p>
+<p class="code">SELECT * FROM <i>person</i> WHERE <i>name</i> LIKE "M%a"</p>
+<p>(Protože je to docela mess, třetí query vrátí řádky, kde jméno začíná na <b>M</b> a končí na <b>a</b></p>
+
+<h2>5. Funkce</h2>
+<p>
+    Místo záznamů z tabulky může dotaz vracet i jiné hodnoty, například průměr daného sloupce.
+    K tomu se využívají SQL funkce.
+</p>
+<p>
+    Funkce fungují stejně jako výběrové dotazy, akorát je místo sloupců, které chceme vybrat, zadána funkce.
+</p>
+<p>Obecný tvar:</p>
+<p class="code">SELECT <i>FUNKCE(<b>parametry</b>)</i> FROM <i>tabulka</i>;</p>
+<p>Příklad, který vypíše průměrný věk lidí v tabulce:</p>
+<p class="code">SELECT AVG(<i>age</i>) FROM <i>person</i>;</p>
+<h3>5.1. Často používané funkce</h3>
+<ul>
+    <li><b>COUNT(*)</b> - Vypíše počet záznamů ve sloupci</li>
+    <li><b>SUM(*)</b> - Součet hodnot ve sloupci</li>
+    <li><b>AVG(*)</b> - Průměr hodnot ve sloupci</li>
+    <li><b>MAX(*)</b> - Nejvyšší hodnota ve sloupci</li>
+    <li><b>MIN(*)</b> - Nejnižší hodnota ve sloupci</li>
+</ul>
+<p>(Za hvězdičku lze doplnit název jakéhokoli sloupce)</p>
+
+<h2>6. Agregace</h2>
+<p><b>Tohle je mess, nejsem si tím jistý</b></p>
+<p>Agregace jsou dotazy, které kombinují funkce a výpis jednotlivých řádků.</p>
+<p>Obecný tvar agregace:</p>
+<p class="code">SELECT <b>FUNKCE(<i>sloupec</i>)</b>, <i>sloupec</i> FROM <i>jmenoTabulky</i> GROUP BY <i>sloupec</i>;
+</p>
+<br>
+<p>Příklad, který vypíše, kolik jednotliví lidé vydělali:</p>
+<p class="code">SELECT <i>name</i>, <b>SUM(<i>price</i>)</b> FROM <i>stonks</i> GROUP BY <i>name</i>;</p>
+<p>Tento příklad poskytne výpis:</p>
+<table>
+    <tr>
+        <th>name</th>
+        <th>SUM(price)</th>
+    </tr>
+    <tr>
+        <td>Damian</td>
+        <td>420000</td>
+    </tr>
+    <tr>
+        <td>Pepa</td>
+        <td>50000</td>
+    </tr>
+    <tr>
+        <td>Arnošt</td>
+        <td>666666</td>
+    </tr>
+</table>
 </body>
 </html>
