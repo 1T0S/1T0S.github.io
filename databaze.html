@@ -172,10 +172,9 @@
     <li>FOREIGN KEY - Reference řádku jiné tabulky</li>
 </ul>
 <p>Foreign key se zapisuje syntaxí:</p>
-<p class="code">...</p>
-<p class="code">FOREIGN KEY(<i>jmenoSloupce</i>) REFERENCES <i>jmenoCiziTabulky</i>(<i>jmenoSloupceVCiziTabulce</i>);
+<p class="code">.....<br>
+    FOREIGN KEY(<i>jmenoSloupce</i>) REFERENCES <i>jmenoCiziTabulky</i>(<i>jmenoSloupceVCiziTabulce</i>);
 </p>
-<p class="code">...</p>
 
 <h2>4. Mazání tabulek</h2>
 <p>
@@ -330,5 +329,233 @@
         <td>666666</td>
     </tr>
 </table>
+
+<h2>7. Wildcards</h2>
+<p>Wildcards jsou jako regexy z Wishe - používají se pro vyhledávání pomocí řetězců. Jejich implementace se mohou
+u jednotlivých druhů databází lišit. Tl;Dr na této stránce je vypracováno pro MySql.</p>
+<p>Obecná syntaxe:</p>
+<p class="code">SELECT * FROM <i>jmenoDatabaze</i> WHERE <i>sloupec</i> LIKE <b>řetězecPoužívajícíWildcard</b>;</p>
+<br>
+<p>Wildcard znaky:</p>
+<ul>
+    <li><b>%</b> Reprezentuje nula a více znaků</li>
+    <li><b>_</b> Reprezentuje jeden znak</li>
+    <li><i>znaky<b>%</b></i> Začíná znaky před procentem</li>
+    <li><b>%</b><i>znaky</i> Končí znaky po procentu</li>
+    <li><b>%</b><i>znaky</i><b>%</b> Znaky mezi procenty se nachází kdekoli v řetězci</li>
+</ul>
+
+<p>Databáze, která bude použita pro příklad:</p>
+<table>
+    <tr>
+        <th>id</th>
+        <th>gameName</th>
+    </tr>
+    <tr>
+        <td>0</td>
+        <td>The Witcher</td>
+    </tr>
+    <tr>
+        <td>1</td>
+        <td>The Witcher 2: Assassin of Kings</td>
+    </tr>
+    <tr>
+        <td>2</td>
+        <td>The Witcher 3: Wild Hunt</td>
+    </tr>
+    <tr>
+        <td>3</td>
+        <td>Tomb Raider</td>
+    </tr>
+    <tr>
+        <td>4</td>
+        <td>Rise of the Tomb Raider</td>
+    </tr>
+    <tr>
+        <td>5</td>
+        <td>Shadow of the Tomb Raider</td>
+    </tr>
+    <tr>
+        <td>6</td>
+        <td>Bioshock 1</td>
+    </tr>
+    <tr>
+        <td>7</td>
+        <td>Bioshock 2</td>
+    </tr>
+    <tr>
+        <td>8</td>
+        <td>Bioshock Infinite</td>
+    </tr>
+    <tr>
+        <td>9</td>
+        <td>WoT</td>
+    </tr>
+    <tr>
+        <td>10</td>
+        <td>WoW</td>
+    </tr>
+</table>
+<p>Příklad query, která vybere jakoukoli Bioshock hru z tabulky (použití % wildcardu)</p>
+<p class="code">SELECT * FROM <i>games</i> WHERE <i>gameName</i> LIKE <b>"Bioshock%"</b>;</p>
+<p>Příklad query, která vybere jakoukoli Tomb Raider hru z tabulky (použití % wildcardu)</p>
+<p class="code">SELECT * FROM <i>games</i> WHERE <i>gameName</i> LIKE <b>"%Tomb Raider"</b>;</p>
+<p>Příklad query, která vybere jakoukoli Serious Sam hru z tabulky (použití _ wildcardu)</p>
+<p class="code">SELECT * FROM <i>games</i> WHERE <i>gameName</i> LIKE <b>"Serious Sam _"</b>;</p>
+<p>Příklad query, která vybere WoW a WoT z tabulky (použití _ wildcardu)</p>
+<p class="code">SELECT * FROM <i>games</i> WHERE <i>gameName</i> LIKE <b>"Wo_"</b>;</p>
+<br>
+<p>Wildcardy se dají kombinovat.</p>
+
+<h2>8. Unions</h2>
+<p>Operátor UNION spojí výsledky dvou a více dotazů.</p>
+<p><b>Reminder: Dotazy nemusí být (a obvykle nejsou) ze stejné tabulky</b></p>
+<p>Při práci s tímto operátorem platí dvě pravidla:</p>
+<ul>
+    <li>Všechny dotazy musí vracet shodný počet sloupců</li>
+    <li>Všechny dotazy musí vracet sloupce se shodnými datovými typy (První dotaz vrací VARCHAR a INT, druhý musí taktéž
+    vracet VARCHAR a INT, a to ve stejném pořadí).</li>
+</ul>
+<p>Vzor použití:</p>
+<p class="code"><b>DOTAZ1</b> UNION <b>DOTAZ2</b>;</p>
+<p>
+    Příklad, který vybere jména her, id developerů z tabulky games a jména enginů, id developerů z tabulky developers,
+    následně je seřadí podle id developera.
+</p>
+<p class="code">SELECT <i>games.gameName, games.idDeveloper</i> FROM <i>games</i> UNION SELECT
+    <i>developers.developerEngine, developers.idDeveloper</i> FROM <i>developers</i> ORDER by <i>idDeveloper</i>;</p>
+
+<h2>9. Joins</h2>
+<p>Spojují data z dvou a více tabulek, pain.</p>
+<p>JOIN kombinuje data z řad různých tabulek, pokud je splněna určitá podmínka.</p>
+<p>Příklad, který vybere data ze tří tabulek a spojí je dle hodnot id jednotlivých řad:</p>
+<p class="code">
+    SELECT <i>games.gameName, companies.idCompany, companies.companyName, games.idDeveloper,
+    developers.developerEngine</i> FROM <i>games</i><br> JOIN <i>developers</i> ON
+    <b>games.idDeveloper = developers.idDeveloper</b><br>
+    JOIN <i>companies</i> ON <b>developers.idCompany = companies.idCompany</b>;
+</p>
+<p>Existuje více typů JOINů, je to komplikované, nemá smysl to rozepisovat, Google that shit.</p>
+
+<h2>10. Nested queries</h2>
+<p>
+    Nested queries provádějí dotazy, které se neaplikují na celou tabulku, nýbrž na výsledek jiného dotazu.
+Používají se při práci s dvěma či více tabulkami.
+</p>
+<p>Obecný tvar syntaxe:</p>
+<p class="code">SELECT <i>sloupec1, sloupec2....</i> FROM <i>tabulka</i><br>WHERE <i>sloupec</i> in (<br>SELECT <i>sloupec</i>
+    FROM <i>tabulka</i><br>WHERE <b>podminka</b><br>);</p>
+<br>
+<p>
+    Příklad, který vybere jméno a žánr hry z tabulky games u her, které developer udělal v Unreal Enginu či Crystal Tools
+    (data nacházející se v tabulce developer) :
+</p>
+<p class="code">
+    SELECT <i>games.gameName, games.gameGenre</i> FROM <i>games</i><br>
+    WHERE <i>games.idDeveloper</i> IN (<br>
+    SELECT <i>developers.idDeveloper</i> FROM <i>developers</i><br>
+    WHERE <i>developers.developerEngine</i> = "Crystal Tools" OR <i>developers.developerEngine</i> = "Unreal Engine"<br>
+    );
+</p>
+
+<br>
+<h1>Další databázové věci</h1>
+<h2>1. ON DELETE</h2>
+<p>
+    Constraint ON DELETE se používá u <b>cizích klíčů</b>. Zajišťuje, že při smazání řádku, na který referuje cizí klíč,
+    nedojde k problému s databází.
+</p>
+<p>Obecný tvar: </p>
+<p class="code">
+    .....<br>
+    FOREIGN KEY(<i>sloupec</i>) REFERENCES <b>tabulka</b>(<i>sloupec</i>) ON DELETE SET NULL; <br>
+</p>
+<p class="code">
+    .....<br>
+    FOREIGN KEY(<i>sloupec</i>) REFERENCES <b>tabulka</b>(<i>sloupec</i>) ON DELETE SET CASCADE; <br>
+</p>
+
+<p>
+    Pokud je ON DELETE nastaveno na NULL, do cizího klíče bude při smazání záznamu, na který klíč referuje,
+    nahrána hodnota <b>NULL</b>, což předejde referenci na neexistující řádek tabulky.
+    Pokud je ON DELETE nastaveno na <b>CASCADE</b>, dojde při smazání záznamu, na který klíč referuje,
+    ke smazání daného řádku tabulky.
+</p>
+
+<h2>2. Transakce</h2>
+<p>
+    Transakce jsou skupiny SQL dotazů. Při úspěšném provedení všech dotazů jsou transakce prováděný, při selhání
+    alespoň jednoho dotazu prováděny nejsou. Je možno je ovládat pomocí keywordů COMMIT, ROLLBACK, SAVEPOINT...
+</p>
+<p>Transakce respektují princip ACID:</p>
+<ul>
+    <li>A - <b>Atomicity</b> -> Data jsou dělena na nejmenší možné celky</li>
+    <li>C - <b>Consistency</b> -> Veškeré modifikace dat musí odpovídat předepsaným pravidlům, constraintům, kaskádám,
+        triggerům...</li>
+    <li>I - <b>Isolation</b> -> Data jsou od sebe izolována, databáze může provádět více operací <b>(?)</b></li>
+    <li>D - <b>Durability</b> -> Změny provedené v databázi jsou trvanlivé </li>
+</ul>
+
+<h2>3. Normalizace databází</h2>
+<p>Existuje asi 6 forem normalizace databáze, do DIS jsou však potřeba jen tři.</p>
+<h3>Forma 1</h3>
+<p>
+    Forma jedna říká, že data musí být <b>unikátní</b> (žádné duplicitní záznamy) a musí dodržovat princip
+    <b>atomicity</b> (data musí být rozdělena do co nejmenších jednotek).
+</p>
+<p>Před normalizací:</p>
+<table>
+    <tr>
+        <th>Name</th>
+    </tr>
+    <tr>
+        <td>Richard Stallman</td>
+    </tr>
+</table>
+
+<p>Po normalizaci</p>
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Surname</th>
+    </tr>
+    <tr>
+        <th>Richard</th>
+        <th>Stallman</th>
+    </tr>
+</table>
+
+<h3>Forma 2</h3>
+<p>
+    Pro splnění formy 2 musí databáze splňovat všechny předešlé formy a tabulky musí mít jeden sloupec, ve kterém se
+    nachází primární klíč.
+</p>
+<p>Před normalizací:</p>
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Surname</th>
+    </tr>
+    <tr>
+        <td>Richard</td>
+        <td>Stallman</td>
+    </tr>
+</table>
+<p>Po normalizaci:</p>
+<table>
+    <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Surname</th>
+    </tr>
+    <tr>
+        <td>1</td>
+        <td>Richard</td>
+        <td>Stallman</td>
+    </tr>
+</table>
+
+<h3>Forma 3</h3>
+<p><a href="https://en.wikipedia.org/wiki/Third_normal_form">Raději wiki</a></p>
 </body>
 </html>
