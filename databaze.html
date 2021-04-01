@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <title>Databáze</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="highlights/styles/atom-one-dark.css">
+    <script src="highlights/highlight.pack.js"></script>
+    <script>hljs.highlightAll();</script>
 </head>
 <body>
 <h1>INFO</h1>
@@ -11,12 +14,10 @@
 <p>Úprava textu:</p>
 <ul>
     <li>Normální text</li>
-    <li class="code">Kód</li>
-    <li><i>Názva proměnných, tabulek či databází v kódu</i></li>
-    <li><b>Zvýraznění důležitých informací v textu či kódu</b></li>
+    <li><i>Zvýraznění</i></li>
 </ul>
 
-<br>
+
 <h1>Základy databází</h1>
 <h2>1. Co jsou to databáze?</h2>
 <p>
@@ -43,9 +44,9 @@
 <p>Databázový engine je část Database Management Systému, která se stará o provádění CRUD operací. Pro DBMS, který
     používáme (MySql), existují dva důležité databázové enginy - InnoDB a MyISAM. Tyto enginy mají několik rozdílů:</p>
 <ul>
-    <li>MyISAM <b>nepodporuje</b> transakce, InnoDB ano</li>
-    <li>MyISAM <b>nepodporuje</b> cizí klíč, InnoDB ano</li>
-    <li>InnoDB <b>nepodporuje</b> FULLTEXT, MyISAM ano</li>
+    <li>MyISAM <i>nepodporuje</i> transakce, InnoDB ano</li>
+    <li>MyISAM <i>nepodporuje</i> cizí klíč, InnoDB ano</li>
+    <li>InnoDB <i>nepodporuje</i> FULLTEXT, MyISAM ano</li>
 </ul>
 
 <h2>3. Druhy databází</h2>
@@ -95,7 +96,7 @@
     Dotaz (query) je set instrukcí, který se používá pro vykonání určité operace.
 </p>
 
-<br>
+
 <h1>Tvorba tabulek, zadávání a manipulace hodnot</h1>
 <h2>1. Setup</h2>
 <p>
@@ -121,20 +122,21 @@
     Tabulky se dají vytvořit přes grafické rozhraní phpmyadmin či přes SQL.
     Syntaxe SQL dotazu pro vytvoření tabulky:
 </p>
-<p class="code">
-    CREATE TABLE <i>jmeno</i> (<i>jmenoSloupce</i> <b>datovyTyp</b>,
-    <i>jmenoSloupce</i> <b>datovyTyp</b> ... );
-</p>
+<pre><code class="sql">
+    CREATE TABLE <i>jmeno</i> (<i>jmenoSloupce</i> <i>datovyTyp</i>, <i>jmenoSloupce</i> <i>datovyTyp</i> ... );
+    </code>
+</pre>
 <p>
     Příklad, který vytvoří tabulku s int id, string jménem a přijmením:
 </p>
-<p class="code">
+<pre><code class="sql">
     CREATE TABLE <i>person</i> (
-    <i>person_id</i> INT PRIMARY KEY NOT NULL,
-    <i>first_name</i> VARCHAR(20),
-    <i>last_name</i> VARCHAR(20)
+        <i>person_id</i> INT PRIMARY KEY NOT NULL,
+        <i>first_name</i> VARCHAR(20),
+        <i>last_name</i> VARCHAR(20)
     );
-</p>
+    </code>
+</pre>
 <p>
     Vytvoří tabulku:
 </p>
@@ -151,13 +153,14 @@
     zakázáním NULL hodnoty. K tomu slouží constraints, které se píší za datový typ sloupce.
 </p>
 <p>Příklad syntaxe constraints při tvoření tabulky:</p>
-<p class="code">
+<pre><code class="sql">
     CREATE TABLE <i>person</i>(
-    <i>person_id</i> INT PRIMARY KEY NOT NULL,
-    <i>first_name</i> VARCHAR(20) DEFAULT "Damian",
-    <i>last_name</i> VARCHAR(20) NOT NULL
+        <i>person_id</i> INT PRIMARY KEY NOT NULL,
+        <i>first_name</i> VARCHAR(20) DEFAULT "Damian",
+        <i>last_name</i> VARCHAR(20) NOT NULL
     )
-</p>
+</code>
+</pre>
 <p>Tato tabulka bude mít int primární klíč, string jméno, které při nezadání hodnoty bude "Damian", a string
     přijmení, které bude nutno zadat, jinak se dotaz neprovede.</p>
 <p>List obvykle používaných constraintů:</p>
@@ -167,68 +170,80 @@
         záznamu)
     </li>
     <li>PRIMARY KEY - Primární klíč, woooow!</li>
-    <li>DEFAULT <b>val</b> - Pokud není specifikována hodnota sloupce, nastaví ji na <b>val</b></li>
-    <li>CHECK <b>(podmínka)</b> - Ujistí se, že zadávaná hodnota splňuje podmínku</li>
+    <li>DEFAULT <i>val</i> - Pokud není specifikována hodnota sloupce, nastaví ji na <i>val</i></li>
+    <li>CHECK <i>(podmínka)</i> - Ujistí se, že zadávaná hodnota splňuje podmínku</li>
     <li>FOREIGN KEY - Reference řádku jiné tabulky</li>
 </ul>
 <p>Foreign key se zapisuje syntaxí:</p>
-<p class="code">.....<br>
+<pre><code class="sql">
     FOREIGN KEY(<i>jmenoSloupce</i>) REFERENCES <i>jmenoCiziTabulky</i>(<i>jmenoSloupceVCiziTabulce</i>);
-</p>
+</code>
+</pre>
 
 <h2>4. Mazání tabulek</h2>
 <p>
     Tabulky se dají smazat pomocí snadného příkazu:
 </p>
-<p class="code">
+<pre><code class="sql">
     DROP TABLE <i>jmenoTabulky</i>;
-</p>
+    </code>
+</pre>
 
 <h2>5. Modifikace tabulek</h2>
 <p>
     Již existující tabulky lze modifikovat, například přidáním či odebráním sloupce nebo změnou datového typu sloupce.
 </p>
-<p class="code">ALTER TABLE <i>jmenoTabulky</i> ADD <i>jmenoSloupce</i> <b>datovyTyp</b></p>
-<p class="code">ALTER TABLE <i>jmenoTabulky</i> DROP COLUMN <i>jmenoSloupce</i></p>
-<p class="code">ALTER TABLE <i>jmenoTabulky</i> ALTER COLUMN <i>jmenoSloupce</i> <b>datovyTyp</b></p>
+<pre><code class="sql">ALTER TABLE <i>jmenoTabulky</i> ADD <i>jmenoSloupce</i> <i>datovyTyp</i></code></pre>
+<pre><code class="sql">ALTER TABLE <i>jmenoTabulky</i> DROP COLUMN <i>jmenoSloupce</i></code></pre>
+<pre><code class="sql">ALTER TABLE <i>jmenoTabulky</i> ALTER COLUMN <i>jmenoSloupce</i> <i>datovyTyp</i></code></pre>
+<pre><code class="sql">ALTER TABLE <i>jmenoTabulky</i> MODFIY <i>nazevSloupce</i> <i>datovyTyp&Constraints</i></code></pre>
+<p>
+    Při přidávání sloupců je možno použít argument <i>FIRST</i>, který vytvoří sloupec na první pozici, nebo argument
+    <i>AFTER</i> <i>sloupec</i>, který vytvoří sloupec za určitým sloupcem.
+</p>
+<p>Sloupce se též dají kompletně změnit:</p>
+<pre><code class="code">
+    ALTER TABLE <i>tabulka</i> CHANGE <i>puvodniNazevSloupce</i> <i>novyNazevSloupce</i> <i>datovyTyp&Constraints;
+</i></code></pre>
 
 <h2>6. Přidávání dat do tabulky</h2>
 <p>
     Po vytvoření tabulky je potřeba ji naplnit daty. To se obvykle nedělá manuálně, ale za pomocí skriptu či programu.
     Syntaxe sql dotazu pro přidání záznamu do tabulky:
 </p>
-<p class="code">INSERT INTO <i>jmenoTabulky</i> VALUES(<b>hodnoty</b>);</p>
+<pre><code class="code">INSERT INTO <i>jmenoTabulky</i> VALUES(<i>hodnoty</i>);</code></pre>
 <p>Příklad, který přidá člověka Pepe Gun s id 0:</p>
-<p class="code">
+<pre><code class="code">
     INSERT INTO <i>person</i> VALUES(0, "Pepe", "Gun");
-</p>
+</code>
+</pre>
 <p>Příklad, který přidá člověka Damian s id 1. Příjmení je neznámé, tudíž NULL</p>
-<p class="code">
-    INSERT INTO <i>person</i>(id, first_name) VALUES (1, "Damian");
-</p>
+<pre><code class="code">INSERT INTO <i>person</i>(id, first_name) VALUES (1, "Damian");
+</code>
+</pre>
 
 <h2>7. Měnění dat v tabulce</h2>
 <h3>7.1. Měnění dat</h3>
 <p>Data v tabulce se dají měnit pomocí webového rozhraní phpmyadmin či SQL.</p>
 <p>Pro měnění dat se používá příkaz UPDATE:</p>
-<p class="code">
-    UPDATE <i>jmenoTabulky</i> SET <i>jmenoAtributu</i> = <b>hodnota</b> WHERE <b>podminka</b>;
-</p>
+<pre><code class="code">UPDATE <i>jmenoTabulky</i> SET <i>jmenoAtributu</i> = <i>hodnota</i> WHERE <i>podminka</i>;
+</code>
+</pre>
 <p>Příklad, který změní všechny lidi, kteří se jmenují "Pepa", na "Damián"</p>
-<p class="code">
-    UPDATE <i>person</i> SET <i>first_name</i> = "Damian" WHERE <i>first_name</i> = "Pepa";
-</p>
+<pre><code class="code">UPDATE <i>person</i> SET <i>first_name</i> = "Damian" WHERE <i>first_name</i> = "Pepa";
+</code>
+</pre>
 <h3>7.2. Mazání záznamů</h3>
 <p>Na podobném principu funguje příkaz na mazání řádků tabulky:</p>
-<p class="code">
-    DELETE FROM <i>jmenoTabulky</i> WHERE <b>podminka</b>;
-</p>
+<pre><code class="code">DELETE FROM <i>jmenoTabulky</i> WHERE <i>podminka</i>;
+</code>
+</pre>
 <p>Příklad, který smaže všechny, kteří se jmenují Damian</p>
-<p class="code">
-    DELETE FROM <i>person</i> WHERE <i>first_name</i> = "Damian";
-</p>
+<pre><code class="code">DELETE FROM <i>person</i> WHERE <i>first_name</i> = "Damian";
+</code>
+</pre>
 
-<br>
+
 <h1>Získávání dat z databáze</h1>
 
 <h2>1. Dotazy</h2>
@@ -237,47 +252,46 @@
     se používá příkaz SELECT
 </p>
 <p>Základní tvar příkazu SELECT, který vybere veškeré záznamy z dané tabulky:</p>
-<p class="code">SELECT * FROM <i>jmenoTabulky</i>;</p>
+<pre><code class="code">SELECT * FROM <i>jmenoTabulky</i>;</code></pre>
 <p>Hvězdička může být vyměněna za konkrétní sloupce, které chceme dotazem získat.</p>
 <p>Příklad dotazu, který vybere jména a přijmení z tabulky person:</p>
-<p class="code">SELECT <i>name</i>, <i>surname</i> FROM <i>person</i>;</p>
+<pre><code class="code">SELECT <i>name</i>, <i>surname</i> FROM <i>person</i>;</code></pre>
 
 <h2>2. Třízení</h2>
 <p>Výsledky, které dotaz vrátí, je možno třídit pomocí ORDER BY:</p>
-<p class="code">SELECT * FROM <i>jmenoDatabaze</i> ORDER BY <i>jmenoSloupce</i>, <i>jmenoSloupce, ...</i>;</p>
+<pre><code class="code">SELECT * FROM <i>jmenoDatabaze</i> ORDER BY <i>jmenoSloupce</i>, <i>jmenoSloupce, ...</i>;</code></pre>
 <p>
     Třídit lze dle většiny datových typů. V základu jsou data třízena vzestupně (0...∞, A...Z), přidáním keywordu
-    <b>DESC</b> za název sloupce však lze třídit i sestupně.
+    <i>DESC</i> za název sloupce však lze třídit i sestupně.
 </p>
 <p>Příklad, který vybere jména a věk z databáze a tato data následně setřídí sestupně:</p>
-<p class="code">SELECT <i>name</i>, <i>age</i> FROM <i>person</i> ORDER BY <i>age</i> DESC, <i>name</i> DESC;</p>
+<pre><code class="code">SELECT <i>name</i>, <i>age</i> FROM <i>person</i> ORDER BY <i>age</i> DESC, <i>name</i> DESC;</code></pre>
 
 <h2>3. Limitování</h2>
-<p>Počet výsledků, které dotaz zobrazí, je možno omezit příkazem <b>LIMIT</b>:</p>
-<p class="code">SELECT * FROM <i>databaze</i> LIMIT <i>n</i>;</p>
+<p>Počet výsledků, které dotaz zobrazí, je možno omezit příkazem <i>LIMIT</i>:</p>
+<pre><code class="code">SELECT * FROM <i>databaze</i> LIMIT <i>n</i>;</code></pre>
 <p>Tento příkaz vypíše pouze <i>n</i> prvků z <i>tabulky</i></p>
 
 <h2>4. Podmínky</h2>
 <p>
-    Vracet všechny záznamy tabulky nemá smysl, proto jsou tu podmínky. Pomocí příkazu <b>WHERE</b> lze omezit, jaké
+    Vracet všechny záznamy tabulky nemá smysl, proto jsou tu podmínky. Pomocí příkazu <i>WHERE</i> lze omezit, jaké
     sloupce budou vráceny.
 </p>
 <p>Vzorový tvar dotazu s WHERE:</p>
-<p class="code">SELECT * FROM <i>tabulka</i> WHERE <b>podminka</b>;</p>
+<pre><code class="code">SELECT * FROM <i>tabulka</i> WHERE <i>podminka</i>;</code></pre>
 <p>Podmínek může být více, spojují se pak logickými operátory:</p>
-<p class="code">SELECT * FROM <i>tabulka</i> WHERE <b>podminka</b> <i>logickyOperator</i>
-    <b>podminka</b> <i>logickyOperator</i> <b>podminka</b>....;</p>
+<pre><code class="code">SELECT * FROM <i>tabulka</i> WHERE <i>podminka</i> <i>logickyOperator</i> <i>podminka</i> <i>logickyOperator</i> <i>podminka</i>....;</code></pre>
 <p>List často používaných operátorů:</p>
 <ul>
-    <li><b> >, <, <=, >=, =, <> </b> Operátory porovnání</li>
-    <li><b>AND, OR</b> Základní logické operátory</li>
-    <li><b>IN, BETWEEN, LIKE</b> Používány pro složitější podmínky</li>
+    <li><i> >, <, <=, >=, =, <> </i> Operátory porovnání</li>
+    <li><i>AND, OR</i> Základní logické operátory</li>
+    <li><i>IN, BETWEEN, LIKE</i> Používány pro složitější podmínky</li>
 </ul>
 <p>Příklady:</p>
-<p class="code">SELECT * FROM <i>person</i> WHERE <i>age</i> BETWEEN 20 AND 80</p>
-<p class="code">SELECT * FROM <i>person</i> WHERE <i>surname</i> IN ("Net", "Bruh")</p>
-<p class="code">SELECT * FROM <i>person</i> WHERE <i>name</i> LIKE "M%a"</p>
-<p>(Protože je to docela mess, třetí query vrátí řádky, kde jméno začíná na <b>M</b> a končí na <b>a</b></p>
+<pre><code class="code">SELECT * FROM <i>person</i> WHERE <i>age</i> BETWEEN 20 AND 80</code></pre>
+<pre><code class="code">SELECT * FROM <i>person</i> WHERE <i>surname</i> IN ("Net", "Bruh")</code></pre>
+<pre><code class="code">SELECT * FROM <i>person</i> WHERE <i>name</i> LIKE "M%a</code>"</pre>
+<p>(Protože je to docela mess, třetí query vrátí řádky, kde jméno začíná na <i>M</i> a končí na <i>a</i></p>
 
 <h2>5. Funkce</h2>
 <p>
@@ -288,28 +302,28 @@
     Funkce fungují stejně jako výběrové dotazy, akorát je místo sloupců, které chceme vybrat, zadána funkce.
 </p>
 <p>Obecný tvar:</p>
-<p class="code">SELECT <i>FUNKCE(<b>parametry</b>)</i> FROM <i>tabulka</i>;</p>
+<pre><code class="code">SELECT <i>FUNKCE(<i>parametry</i>)</i> FROM <i>tabulka</i>;</code></pre>
 <p>Příklad, který vypíše průměrný věk lidí v tabulce:</p>
-<p class="code">SELECT AVG(<i>age</i>) FROM <i>person</i>;</p>
+<pre><code class="code">SELECT AVG(<i>age</i>) FROM <i>person</i>;</code></pre>
 <h3>5.1. Často používané funkce</h3>
 <ul>
-    <li><b>COUNT(*)</b> - Vypíše počet záznamů ve sloupci</li>
-    <li><b>SUM(*)</b> - Součet hodnot ve sloupci</li>
-    <li><b>AVG(*)</b> - Průměr hodnot ve sloupci</li>
-    <li><b>MAX(*)</b> - Nejvyšší hodnota ve sloupci</li>
-    <li><b>MIN(*)</b> - Nejnižší hodnota ve sloupci</li>
+    <li><i>COUNT(*)</i> - Vypíše počet záznamů ve sloupci</li>
+    <li><i>SUM(*)</i> - Součet hodnot ve sloupci</li>
+    <li><i>AVG(*)</i> - Průměr hodnot ve sloupci</li>
+    <li><i>MAX(*)</i> - Nejvyšší hodnota ve sloupci</li>
+    <li><i>MIN(*)</i> - Nejnižší hodnota ve sloupci</li>
 </ul>
 <p>(Za hvězdičku lze doplnit název jakéhokoli sloupce)</p>
 
 <h2>6. Agregace</h2>
-<p><b>Tohle je mess, nejsem si tím jistý</b></p>
+<p><i>Tohle je mess, nejsem si tím jistý</i></p>
 <p>Agregace jsou dotazy, které kombinují funkce a výpis jednotlivých řádků.</p>
 <p>Obecný tvar agregace:</p>
-<p class="code">SELECT <b>FUNKCE(<i>sloupec</i>)</b>, <i>sloupec</i> FROM <i>jmenoTabulky</i> GROUP BY <i>sloupec</i>;
-</p>
-<br>
+<pre><code class="code">SELECT <i>FUNKCE(<i>sloupec</i>)</i>, <i>sloupec</i> FROM <i>jmenoTabulky</i> GROUP BY <i>sloupec</i>;
+</code></pre>
+
 <p>Příklad, který vypíše, kolik jednotliví lidé vydělali:</p>
-<p class="code">SELECT <i>name</i>, <b>SUM(<i>price</i>)</b> FROM <i>stonks</i> GROUP BY <i>name</i>;</p>
+<pre><code class="code">SELECT <i>name</i>, <i>SUM(<i>price</i>)</i> FROM <i>stonks</i> GROUP BY <i>name</i>;</code></pre>
 <p>Tento příklad poskytne výpis:</p>
 <table>
     <tr>
@@ -334,15 +348,15 @@
 <p>Wildcards jsou jako regexy z Wishe - používají se pro vyhledávání pomocí řetězců. Jejich implementace se mohou
 u jednotlivých druhů databází lišit. Tl;Dr na této stránce je vypracováno pro MySql.</p>
 <p>Obecná syntaxe:</p>
-<p class="code">SELECT * FROM <i>jmenoDatabaze</i> WHERE <i>sloupec</i> LIKE <b>řetězecPoužívajícíWildcard</b>;</p>
-<br>
+<pre><code class="code">SELECT * FROM <i>jmenoDatabaze</i> WHERE <i>sloupec</i> LIKE <i>řetězecPoužívajícíWildcard</i>;</code></pre>
+
 <p>Wildcard znaky:</p>
 <ul>
-    <li><b>%</b> Reprezentuje nula a více znaků</li>
-    <li><b>_</b> Reprezentuje jeden znak</li>
-    <li><i>znaky<b>%</b></i> Začíná znaky před procentem</li>
-    <li><b>%</b><i>znaky</i> Končí znaky po procentu</li>
-    <li><b>%</b><i>znaky</i><b>%</b> Znaky mezi procenty se nachází kdekoli v řetězci</li>
+    <li><i>%</i> Reprezentuje nula a více znaků</li>
+    <li><i>_</i> Reprezentuje jeden znak</li>
+    <li><i>znaky<i>%</i></i> Začíná znaky před procentem</li>
+    <li><i>%</i><i>znaky</i> Končí znaky po procentu</li>
+    <li><i>%</i><i>znaky</i><i>%</i> Znaky mezi procenty se nachází kdekoli v řetězci</li>
 </ul>
 
 <p>Databáze, která bude použita pro příklad:</p>
@@ -397,19 +411,19 @@ u jednotlivých druhů databází lišit. Tl;Dr na této stránce je vypracován
     </tr>
 </table>
 <p>Příklad query, která vybere jakoukoli Bioshock hru z tabulky (použití % wildcardu)</p>
-<p class="code">SELECT * FROM <i>games</i> WHERE <i>gameName</i> LIKE <b>"Bioshock%"</b>;</p>
+<pre><code class="code">SELECT * FROM <i>games</i> WHERE <i>gameName</i> LIKE <i>"Bioshock%"</i>;</code></pre>
 <p>Příklad query, která vybere jakoukoli Tomb Raider hru z tabulky (použití % wildcardu)</p>
-<p class="code">SELECT * FROM <i>games</i> WHERE <i>gameName</i> LIKE <b>"%Tomb Raider"</b>;</p>
+<pre><code class="code">SELECT * FROM <i>games</i> WHERE <i>gameName</i> LIKE <i>"%Tomb Raider"</i>;</code></pre>
 <p>Příklad query, která vybere jakoukoli Serious Sam hru z tabulky (použití _ wildcardu)</p>
-<p class="code">SELECT * FROM <i>games</i> WHERE <i>gameName</i> LIKE <b>"Serious Sam _"</b>;</p>
+<pre><code class="code">SELECT * FROM <i>games</i> WHERE <i>gameName</i> LIKE <i>"Serious Sam _"</i>;</code></pre>
 <p>Příklad query, která vybere WoW a WoT z tabulky (použití _ wildcardu)</p>
-<p class="code">SELECT * FROM <i>games</i> WHERE <i>gameName</i> LIKE <b>"Wo_"</b>;</p>
-<br>
+<pre><code class="code">SELECT * FROM <i>games</i> WHERE <i>gameName</i> LIKE <i>"Wo_"</i>;</code></pre>
+
 <p>Wildcardy se dají kombinovat.</p>
 
 <h2>8. Unions</h2>
 <p>Operátor UNION spojí výsledky dvou a více dotazů.</p>
-<p><b>Reminder: Dotazy nemusí být (a obvykle nejsou) ze stejné tabulky</b></p>
+<p><i>Reminder: Dotazy nemusí být (a obvykle nejsou) ze stejné tabulky</i></p>
 <p>Při práci s tímto operátorem platí dvě pravidla:</p>
 <ul>
     <li>Všechny dotazy musí vracet shodný počet sloupců</li>
@@ -417,24 +431,24 @@ u jednotlivých druhů databází lišit. Tl;Dr na této stránce je vypracován
     vracet VARCHAR a INT, a to ve stejném pořadí).</li>
 </ul>
 <p>Vzor použití:</p>
-<p class="code"><b>DOTAZ1</b> UNION <b>DOTAZ2</b>;</p>
+<pre><code class="code"><i>DOTAZ1</i> UNION <i>DOTAZ2</i>;</code></pre>
 <p>
     Příklad, který vybere jména her, id developerů z tabulky games a jména enginů, id developerů z tabulky developers,
     následně je seřadí podle id developera.
 </p>
-<p class="code">SELECT <i>games.gameName, games.idDeveloper</i> FROM <i>games</i> UNION SELECT
-    <i>developers.developerEngine, developers.idDeveloper</i> FROM <i>developers</i> ORDER by <i>idDeveloper</i>;</p>
+<pre><code class="code">SELECT <i>games.gameName, games.idDeveloper</i> FROM <i>games</i> UNION SELECT
+    <i>developers.developerEngine, developers.idDeveloper</i> FROM <i>developers</i> ORDER by <i>idDeveloper</i>;</code></pre>
 
 <h2>9. Joins</h2>
 <p>Spojují data z dvou a více tabulek, pain.</p>
 <p>JOIN kombinuje data z řad různých tabulek, pokud je splněna určitá podmínka.</p>
 <p>Příklad, který vybere data ze tří tabulek a spojí je dle hodnot id jednotlivých řad:</p>
-<p class="code">
+<pre><code class="code">
     SELECT <i>games.gameName, companies.idCompany, companies.companyName, games.idDeveloper,
-    developers.developerEngine</i> FROM <i>games</i><br> JOIN <i>developers</i> ON
-    <b>games.idDeveloper = developers.idDeveloper</b><br>
-    JOIN <i>companies</i> ON <b>developers.idCompany = companies.idCompany</b>;
-</p>
+    developers.developerEngine</i> FROM <i>games</i> JOIN <i>developers</i> ON
+    <i>games.idDeveloper = developers.idDeveloper</i>
+    JOIN <i>companies</i> ON <i>developers.idCompany = companies.idCompany</i>;
+</code></pre>
 <p>Existuje více typů JOINů, je to komplikované, nemá smysl to rozepisovat, Google that shit.</p>
 
 <h2>10. Nested queries</h2>
@@ -443,42 +457,42 @@ u jednotlivých druhů databází lišit. Tl;Dr na této stránce je vypracován
 Používají se při práci s dvěma či více tabulkami.
 </p>
 <p>Obecný tvar syntaxe:</p>
-<p class="code">SELECT <i>sloupec1, sloupec2....</i> FROM <i>tabulka</i><br>WHERE <i>sloupec</i> in (<br>SELECT <i>sloupec</i>
-    FROM <i>tabulka</i><br>WHERE <b>podminka</b><br>);</p>
-<br>
+<pre><code class="code">SELECT <i>sloupec1, sloupec2....</i> FROM <i>tabulka</i>WHERE <i>sloupec</i> in (SELECT <i>sloupec</i>
+    FROM <i>tabulka</i>WHERE <i>podminka</i>);</code></pre>
+
 <p>
     Příklad, který vybere jméno a žánr hry z tabulky games u her, které developer udělal v Unreal Enginu či Crystal Tools
     (data nacházející se v tabulce developer) :
 </p>
-<p class="code">
-    SELECT <i>games.gameName, games.gameGenre</i> FROM <i>games</i><br>
-    WHERE <i>games.idDeveloper</i> IN (<br>
-    SELECT <i>developers.idDeveloper</i> FROM <i>developers</i><br>
-    WHERE <i>developers.developerEngine</i> = "Crystal Tools" OR <i>developers.developerEngine</i> = "Unreal Engine"<br>
+<pre><code class="code">
+    SELECT <i>games.gameName, games.gameGenre</i> FROM <i>games</i>
+    WHERE <i>games.idDeveloper</i> IN (
+    SELECT <i>developers.idDeveloper</i> FROM <i>developers</i>
+    WHERE <i>developers.developerEngine</i> = "Crystal Tools" OR <i>developers.developerEngine</i> = "Unreal Engine"
     );
-</p>
+</code></pre>
 
-<br>
+
 <h1>Další databázové věci</h1>
 <h2>1. ON DELETE</h2>
 <p>
-    Constraint ON DELETE se používá u <b>cizích klíčů</b>. Zajišťuje, že při smazání řádku, na který referuje cizí klíč,
+    Constraint ON DELETE se používá u <i>cizích klíčů</i>. Zajišťuje, že při smazání řádku, na který referuje cizí klíč,
     nedojde k problému s databází.
 </p>
 <p>Obecný tvar: </p>
-<p class="code">
-    .....<br>
-    FOREIGN KEY(<i>sloupec</i>) REFERENCES <b>tabulka</b>(<i>sloupec</i>) ON DELETE SET NULL; <br>
-</p>
-<p class="code">
-    .....<br>
-    FOREIGN KEY(<i>sloupec</i>) REFERENCES <b>tabulka</b>(<i>sloupec</i>) ON DELETE SET CASCADE; <br>
-</p>
+<pre><code class="code">
+    .....
+    FOREIGN KEY(<i>sloupec</i>) REFERENCES <i>tabulka</i>(<i>sloupec</i>) ON DELETE SET NULL; 
+</code></pre>
+<pre><code class="code">
+    .....
+    FOREIGN KEY(<i>sloupec</i>) REFERENCES <i>tabulka</i>(<i>sloupec</i>) ON DELETE SET CASCADE; 
+</code></pre>
 
 <p>
     Pokud je ON DELETE nastaveno na NULL, do cizího klíče bude při smazání záznamu, na který klíč referuje,
-    nahrána hodnota <b>NULL</b>, což předejde referenci na neexistující řádek tabulky.
-    Pokud je ON DELETE nastaveno na <b>CASCADE</b>, dojde při smazání záznamu, na který klíč referuje,
+    nahrána hodnota <i>NULL</i>, což předejde referenci na neexistující řádek tabulky.
+    Pokud je ON DELETE nastaveno na <i>CASCADE</i>, dojde při smazání záznamu, na který klíč referuje,
     ke smazání daného řádku tabulky.
 </p>
 
@@ -489,19 +503,19 @@ Používají se při práci s dvěma či více tabulkami.
 </p>
 <p>Transakce respektují princip ACID:</p>
 <ul>
-    <li>A - <b>Atomicity</b> -> Data jsou dělena na nejmenší možné celky</li>
-    <li>C - <b>Consistency</b> -> Veškeré modifikace dat musí odpovídat předepsaným pravidlům, constraintům, kaskádám,
+    <li>A - <i>Atomicity</i> -> Data jsou dělena na nejmenší možné celky</li>
+    <li>C - <i>Consistency</i> -> Veškeré modifikace dat musí odpovídat předepsaným pravidlům, constraintům, kaskádám,
         triggerům...</li>
-    <li>I - <b>Isolation</b> -> Data jsou od sebe izolována, databáze může provádět více operací <b>(?)</b></li>
-    <li>D - <b>Durability</b> -> Změny provedené v databázi jsou trvanlivé </li>
+    <li>I - <i>Isolation</i> -> Data jsou od sebe izolována, databáze může provádět více operací <i>(?)</i></li>
+    <li>D - <i>Durability</i> -> Změny provedené v databázi jsou trvanlivé </li>
 </ul>
 
 <h2>3. Normalizace databází</h2>
 <p>Existuje asi 6 forem normalizace databáze, do DIS jsou však potřeba jen tři.</p>
 <h3>Forma 1</h3>
 <p>
-    Forma jedna říká, že data musí být <b>unikátní</b> (žádné duplicitní záznamy) a musí dodržovat princip
-    <b>atomicity</b> (data musí být rozdělena do co nejmenších jednotek).
+    Forma jedna říká, že data musí být <i>unikátní</i> (žádné duplicitní záznamy) a musí dodržovat princip
+    <i>atomicity</i> (data musí být rozdělena do co nejmenších jednotek).
 </p>
 <p>Před normalizací:</p>
 <table>
