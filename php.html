@@ -18,6 +18,19 @@
     <li><i>Zvýraznění</i></li>
 </ul>
 
+<h1>Princip fungování Apache web serveru</h1>
+<p>
+    Apache web server je software, který se stará o komunikaci s klientem. Jakmile klient pošle požadavek serveru
+    (-> zadá url adresu webu do prohlížeče), prohlížeč pošle HTTP request serveru. Server tento požadavek zpracuje
+    a klientovi zpět pošle požadované webové stránky.
+</p>
+<p>
+    Samotný Apache server běží na více vláknech (-> multithreading), což znamená, že může vyřizovat větší množství
+    požadavků najednou. Může být nainstalován jak samostatně, tak v LAMP stacku (Linux, Apache, MySql, Perl/PHP).
+    Jednou z nejběžnějších implementací tohoto stacku je XAMPP.
+</p>
+
+<br>
 <h1>Rozdíly oproti jiným jazykům</h1>
 <p>
     Php funguje na stejném principu, jako ostatní jazyky, takže jej zde nebudu vypisovat. Dost se však liší v syntaxi.
@@ -418,5 +431,94 @@ echo("Počet návštěv: " . $_SESSION["counter"]);
 </p>
 
 <h2>5. SELECT</h2>
+<p>
+    SELECT se používá k získávání dat z databází.
+</p>
+<p>
+    Obecný postup je takový, že se nejprve vytvoří dotaz (string). Ten se následně vykoná, výsledek se uloží do proměnné
+    a z té jsou čtena data.
+</p>
+<p>Příklad:</p>
+<pre>
+    <code class="php">
+        // Connection info
+        $server = "localhost";
+        $name = "root";
+        $password = "root";
+        $dbName = "dbdocs";
+
+        try{
+            // Connect to db
+            $connection = new PDO("mysql:host=$server;dbname=$dbName", $name, $password);
+            $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+            // Create query, save results
+            $result = $connection->query("SELECT name, age FROM os");
+
+            // Output results
+            while($row = $result->fetch()){
+                echo "Jméno: " . $row["name"] . ", doba vývoje: " . $row["age"] . " let.";
+            }
+
+        } catch(PDOException $e){
+            echo $e->getMessage();
+        }
+    </code>
+</pre>
+<p>
+    Výsledek (<i>$result = $connection->query($dotaz);</i>) je proměnná, ze které se v cyklu získávají data
+    (<i>$row = $result->fetch()</i>). Pokud se ve výsledku již více řad nenachází, vrátí se <i>false</i> a cyklus se
+    již nevykoná. Jednotlivé řady (<i>$row</i>) jsou asociativní arraye, tudíž se k jejich obsahu přistupuje stylem
+    <i>$row["jménoSloupceVDatabázi"];</i>.
+</p>
+<br>
+<p>SELECT dotazy jde samozřejmě tvořit i jako předpřipravené:</p>
+<pre>
+    <code class="php">
+        // Connection info
+        $server = "localhost";
+        $name = "root";
+        $password = "root";
+        $dbName = "dbdocs";
+
+        try{
+            // Connect to db
+            $connection = new PDO("mysql:host=$server;dbname=$dbName", $name, $password);
+            $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+            // Create prepared statement
+            $statement = $connection->prepare("SELECT name, age FROM os WHERE age > :age;");
+            $statement->bindParam(":age", $age);
+
+            // Get systems older than $age years
+            $age = 15;
+            echo("Systémy starší než $age let:");
+            $statement->execute();
+            $data = $statement->fetchAll();
+            foreach($data as $row){
+                echo("Systém: " . $row["name"] . ", doba vývoje: " . $row["age"] . " let.");
+            }
+
+            // Older than 19 years
+            $age = 19;
+            echo("Systémy starší než $age let:");
+            $statement->execute();
+            $result = $statement->fetchAll();
+            foreach($result as $row){
+                echo("Systém: " . $row["name"] . ", doba vývoje: " . $row["age"] . " let.");
+            }
+
+
+        } catch(PDOException $e){
+            echo $e->getMessage();
+        }
+    </code>
+</pre>
+<p>
+    V tomto případě se nejprve vytvoří předpřipravený dotaz (<i>$statement = $connection->prepare($dotaz);</i>).
+    Tomu se následně nabinduje a nastaví paramety. Pak jen stačí dotaz spustit (<i>$statement->execute();</i>) a získat
+    z něj daná data (<i>$data = $statement->fetchAll();</i>). S těmi se pak pracuje stejně jako s daty z normálního
+    dotazu.
+</p>
 </body>
 </html>

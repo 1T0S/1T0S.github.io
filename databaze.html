@@ -116,6 +116,16 @@
     <li>DATE - Ukládání data ve formátu yyyy-mm-dd</li>
     <li>TIMESTAMP - Ukládání času ve formátu YYYY-MM-DD HH:MM:SS</li>
 </ul>
+<h3>2.1. Současné hodnoty časů</h3>
+<p>
+    Záznamům lze přidat současná hodnota času / roku / timestampu, a to pomocí constraintu
+    <i>DEFAULT CURRENT_datovýTypČasu</i>, například:
+</p>
+<pre>
+    <code class="sql">
+        casZmeny TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP;
+    </code>
+</pre>
 
 <h2>3. Tvoření tabulek</h2>
 <p>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Šablonovací systémy pro vývoj WWW aplikací</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="highlights/styles/atom-one-dark.css">
+    <script src="highlights/highlight.pack.js"></script>
+    <script>hljs.highlightAll();</script>
+</head>
+<body>
+<h1>INFO</h1>
+<p>By 1T0S_</p>
+<p>Úprava textu:</p>
+<ul>
+    <li>Normální text</li>
+    <li><i>Zvýraznění</i></li>
+</ul>
+<br>
+<h1>Eh.... co?</h1>
+<p>
+    Šablonovací systém je část webové stránky, která se stará o prezentační vrstvu webu (-> vykresluje data do šablon).
+    Příklady můžou být například Latte, Smarty, Twig či Dwoo.
+</p>
+<p>
+    Opravdu netuším, co to má společného s tématy v otázce #2.
+</p>
+
+<br>
+<h1>Bootstrap</h1>
+
+<h2>1. Princip fungování</h2>
+<p>
+    Bootstrap je CSS framework (sada CSS a JavaScript souborů), který usnadňuje tvorbu webů.
+</p>
+<p>Razí dva principy:</p>
+<ul>
+    <li>
+        1. <i>Responzivita</i> -> Webová stránka by měla být responzivní, což znamená, že se její obsah bude přizpůsobovat
+        velikosti displaye zařízení tak, aby byla za jakýchkoli okolností přehledná.
+    </li>
+    <li>
+        2. <i>Mobile first</i> -> Aplikace by měla být vyvíjena nejprve pro nejmenší displaye, následně by se měla
+        uzpůsobit větším displayům.
+    </li>
+</ul>
+
+<h2>2. Bootstrap Grid</h2>
+<p>
+    Bootstrap grid je hlavní předností Bootstrapu (eh, býval, dokud nebyl grid přidán i do základního CSS).
+</p>
+<p>
+    Grid se obvykle tvoří v containeru (div třídy <i>container</i>), a to za pomocí řádků (div třídy <i>row</i>) a
+    sloupců (div třídy <i>col</i>). Bootstrap grid má přesně 12 sloupců, jednotlivé <i>div col</i> tagy mohou zabírat
+    libovolný počet těchto sloupců (přidáním -číslo za třídu col, například div <i>col-6</i>). Počet sloupců, který
+    jednotlivé <i>col</i> tagy zabírají, se může lišit dle velikosti obrazovky (přidáním -velikost za třídu col,
+    například div <i>col-sm-2</i>).
+</p>
+
+<h2>3. Breakpoints</h2>
+<p>
+    Breakpoints určují velikost displaye, při které se layout webové stránky změní. Defaultně jich má Bootstrap 5,
+    jsou dobře popsané v dokumentaci.
+</p>
+
+<h2>4. Components</h2>
+<p>
+    Bootstrap nabízí velké množství předem definovaných komponentů. Všechny jsou v dokumentaci (a stejně by si nikdo
+    nezapamatoval, jak se tvoří), takže... google that shit.
+</p>
+
+<br>
+<h1>FontAwesome, wow.js, chart.js</h1>
+<p>... jsou knihovny, které usnadňují tvorbu webových stránek.</p>
+
+<h2>1. FontAwesome</h2>
+<p>
+    FontAwesome je knihovna ikon. Pro její použití je třeba ji buď stáhnout, nebo linknout pomocí CDN.
+    Po provedení tohoto kroku bude možné ikony používat. Tyto ikony se do html vkládají pomocí <i>i</i> tagu, který se
+    obvykle kopíruje z webu (-> různé ikony mají různé třídy).
+</p>
+
+<h2>2. wow.js</h2>
+<p>
+    wow.js je knihovna animací. Po stáhnutí je potřeba ji linknout (CSS a JS). Pro animaci určitého elementu je potřeba
+    mu dát třídu <i>wow</i>, popřípadě specifikovat animaci, například <i>wow bounceInUp</i>.
+</p>
+
+<h2>3. chart.js</h2>
+<p>
+    char.js je knihovna s grafy.
+    <a href="https://www.chartjs.org/docs/latest/samples/bar/vertical.html">Stejně je to Ctrl+C, Ctrl+V, tak wtf</a>.
+</p>
+</body>
